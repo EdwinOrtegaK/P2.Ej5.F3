@@ -28,7 +28,7 @@ class CapacitorCalculator:
         self.center_frame.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
 
         # Etiqueta para seleccionar el tipo de capacitor
-        self.label1 = ttk.Label(self.center_frame, text="Seleccione el tipo de capacitor:")
+        self.label1 = ttk.Label(self.center_frame, text="Seleccione el tipo de capacitor (Para graficar vuelva a seleccionar el capaitor):")
         self.label1.grid(row=0, column=1, pady=10, padx=10, columnspan=3)
 
         # Variables para los Checkbuttons
@@ -36,47 +36,47 @@ class CapacitorCalculator:
 
         # Checkbuttons para seleccionar el tipo de capacitor
         self.placas_checkbutton = ttk.Checkbutton(self.center_frame, text="Placas Paralelas", variable=self.capacitor_type_var, onvalue="Placas Paralelas", offvalue="", command=self.select_capacitor_type)
-        self.placas_checkbutton.grid(row=1, column=1, pady=5, padx=10)
+        self.placas_checkbutton.grid(row=3, column=1, pady=5, padx=10)
 
         self.esferico_checkbutton = ttk.Checkbutton(self.center_frame, text="Esférico", variable=self.capacitor_type_var, onvalue="Esférico", offvalue="", command=self.select_capacitor_type)
-        self.esferico_checkbutton.grid(row=1, column=2, pady=5, padx=10)
+        self.esferico_checkbutton.grid(row=3, column=2, pady=5, padx=10)
 
         self.cilindrico_checkbutton = ttk.Checkbutton(self.center_frame, text="Cilíndrico", variable=self.capacitor_type_var, onvalue="Cilíndrico", offvalue="", command=self.select_capacitor_type)
-        self.cilindrico_checkbutton.grid(row=1, column=3, pady=5, padx=10)
+        self.cilindrico_checkbutton.grid(row=3, column=3, pady=5, padx=10)
 
         # Cuadros de entrada de radios
         self.label2 = ttk.Label(self.center_frame, text="Radio A / Largo (m):")
-        self.label2.grid(row=2, column=0, pady=5, padx=10)
+        self.label2.grid(row=1, column=0, pady=5, padx=10)
 
         self.dimension_entry = ttk.Entry(self.center_frame)
-        self.dimension_entry.grid(row=3, column=0, pady=5, padx=10)
+        self.dimension_entry.grid(row=2, column=0, pady=5, padx=10)
 
         self.label3 = ttk.Label(self.center_frame, text="Radio B / Ancho (m):")
-        self.label3.grid(row=2, column=1, pady=5, padx=10)
+        self.label3.grid(row=1, column=1, pady=5, padx=10)
 
         self.dimension_entry2 = ttk.Entry(self.center_frame)
-        self.dimension_entry2.grid(row=3, column=1, pady=5, padx=10)
+        self.dimension_entry2.grid(row=2, column=1, pady=5, padx=10)
 
         # Cuadros de entrada de voltage
         self.label4 = ttk.Label(self.center_frame, text="Voltage (V):")
-        self.label4.grid(row=2, column=2, pady=5, padx=10)
+        self.label4.grid(row=1, column=2, pady=5, padx=10)
 
         self.voltage_entry = ttk.Entry(self.center_frame)
-        self.voltage_entry.grid(row=3, column=2, pady=5, padx=10)
+        self.voltage_entry.grid(row=2, column=2, pady=5, padx=10)
 
         # Cuadros de entrada de DISTANCIA ENTRE PLACAS
         self.label5 = ttk.Label(self.center_frame, text="Distancia entre placas (m):")
-        self.label5.grid(row=2, column=3, pady=5, padx=10)
+        self.label5.grid(row=1, column=3, pady=5, padx=10)
 
         self.distance_entry = ttk.Entry(self.center_frame)
-        self.distance_entry.grid(row=3, column=3, pady=5, padx=10)
+        self.distance_entry.grid(row=2, column=3, pady=5, padx=10)
 
         # Cuadros de entrada de LONGITUD
         self.label5 = ttk.Label(self.center_frame, text="Longitud (m):")
-        self.label5.grid(row=2, column=4, pady=5, padx=10)
+        self.label5.grid(row=1, column=4, pady=5, padx=10)
 
         self.longitud_entry = ttk.Entry(self.center_frame)
-        self.longitud_entry.grid(row=3, column=4, pady=5, padx=10)
+        self.longitud_entry.grid(row=2, column=4, pady=5, padx=10)
 
         # CheckBox para seleccionar si el capacitor contiene un dieléctrico
         self.dielectric_var = tk.IntVar()
@@ -137,7 +137,7 @@ class CapacitorCalculator:
         if not half:
             C = 4 * math.pi * epsilon0 * 3.40 * (ra * rb) / (rb - ra) 
         else:
-            C = 2 * math.pi * epsilon0 * (3.40 + 1) * (ra * rb) / (rb - ra)
+            C = 2 * math.pi * epsilon0 * (3.40 + 1) * ((ra * rb) / (rb - ra))
         
         return C
 
@@ -152,7 +152,7 @@ class CapacitorCalculator:
         if not half:
             C = (epsilon0 * largo * ancho * 3.40) / (distancia)
         else:
-            C = (epsilon0 * largo * ancho * 3.40 * 2 ) / (3.40 + 1) * (distancia)
+            C = ((3.40/2) + 1/2)*((epsilon0 * largo * ancho) /(distancia))
 
         return C
     
@@ -166,7 +166,7 @@ class CapacitorCalculator:
         if not half:
             C = (2 * math.pi * epsilon0 * longitud * 3.40) / math.log(rb / ra)
         else:
-            C = (2 * math.pi * epsilon0 * (longitud/2) * 3.40) / (3.40 + 1) * math.log(rb / ra)
+            C = ((2 * math.pi * epsilon0 * (longitud)) /math.log(rb / ra))*((3.40/2) + 1/2)
         
         return C
 
@@ -190,8 +190,8 @@ class CapacitorCalculator:
             rb = radiob
             capacitance0 = self.spherical_capacitance(ra, rb)
             
-            charge = capacitance * voltage
-            energy = 0.5 * capacitance * (voltage**2)
+            charge0 = capacitance0 * voltage
+            energy = 0.5 * capacitance0 * (voltage**2)
             
             if has_dielectric:
                 k = 3.40
@@ -199,26 +199,29 @@ class CapacitorCalculator:
                 rb = radiob
                 
                 if dielectric_coverage == "Diélectrico a la mitad":
-                    capacitance = self.spherical_capacitance_diel(ra, rb, half=True)
-                    energy = ((0.5 * capacitance0 * voltage**2) / 2) + ((0.5 * capacitance * (voltage/k)**2) / 2)
-                    libreRa = (1/2 * math.pi * (ra**2))*(charge/k+1)
-                    libreRb = (1/2 * math.pi * (rb**2))*(charge/k+1)
-                    libreDRa = (k/2 * math.pi * (ra**2))*(charge/k+1)
-                    libreDRb = (k/2 * math.pi * (rb**2))*(charge/k+1)
+                    capacitanceMitad = self.spherical_capacitance_diel(ra, rb, half=True)
+                    chargeMitad = capacitance0 * voltage
+                    energy = ((0.25 * capacitance0 * voltage**2)) + ((0.25 * capacitanceMitad * (voltage/k)**2))
+                    libreRa = (1/(2 * math.pi * (ra**2)))*(charge0/(k+1))
+                    libreRb = (1/(2 * math.pi * (rb**2)))*(charge0/(k+1))
+                    libreDRa = (k/(2 * math.pi * (ra**2)))*(charge0/(k+1))
+                    libreDRb = (k/(2 * math.pi * (rb**2)))*(charge0/(k+1))
                     ligadaRa = libreDRa * (1 - 1/k)
                     ligadaRb = libreDRb * (1 - 1/k)
-                    self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre Interna: {libreRa:.4e} C\nCarga Libre Externa: {libreRb:.4e} C\nCarga Libre Interna Dielectrico: {libreDRa:.4e} C\nCarga Libre Externa Dielectrico: {libreDRb:.4e} C\nCarga Ligada Interna: {ligadaRa:.4e} C\nCarga Ligada Externa: {ligadaRb:.4e} C")
+                    self.result_label.config(text=f"Capacitancia: {capacitanceMitad:.4e} F\nCarga: {chargeMitad:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre Interna: {libreRa:.4e} C\nCarga Libre Externa: {libreRb:.4e} C\nCarga Libre Interna Dielectrico: {libreDRa:.4e} C\nCarga Libre Externa Dielectrico: {libreDRb:.4e} C\nCarga Ligada Interna: {ligadaRa:.4e} C\nCarga Ligada Externa: {ligadaRb:.4e} C")
 
                 elif dielectric_coverage == "Diélectrico completo":
                     capacitance = self.spherical_capacitance_diel(ra, rb, half=False)
-                    libreDRa = (charge/4 * math.pi * (ra**2))
-                    libreDRb = (charge/4 * math.pi * (rb**2))
-                    ligadaRa = libreDRa * (1 - 1/k)
-                    ligadaRb = libreDRb * (1 - 1/k)
-                    self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre Interna Dielectrico: {libreDRa:.4e} C\nCarga Libre Externa Dielectrico: {libreDRb:.4e} C\nCarga Ligada Interna: {ligadaRa:.4e} C\nCarga Ligada Externa: {ligadaRb:.4e} C")
+                    chargeCompleto = capacitance0 * voltage
+                    energy = 0.5 * capacitance * (voltage/k)**2
+                    libreDRa = (charge0/(4 * math.pi * (ra**2)))
+                    libreDRb = (charge0/(4 * math.pi * (rb**2)))
+                    ligadaRa = libreDRa * (1 - (1/k))
+                    ligadaRb = libreDRb * (1 - (1/k))
+                    self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {chargeCompleto:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre Interna Dielectrico: {libreDRa:.4e} C\nCarga Libre Externa Dielectrico: {libreDRb:.4e} C\nCarga Ligada Interna: {ligadaRa:.4e} C\nCarga Ligada Externa: {ligadaRb:.4e} C")
 
             else:
-                self.result_label.config(text=f"Capacitancia: {capacitance0:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J")
+                self.result_label.config(text=f"Capacitancia: {capacitance0:.4e} F\nCarga: {charge0:.4e} C\nEnergía: {energy:.4e} J")
 
         #SI EL CAPACITOR ES DE PLACAS PARALELAS
         elif capacitor_type == "Placas Paralelas":
@@ -227,7 +230,7 @@ class CapacitorCalculator:
             distancia = dist
             capacitance0 = self.plaques_capacitance(largo, ancho, distancia)
             
-            charge = capacitance0 * voltage
+            charge0 = capacitance0 * voltage
             energy = 0.5 * capacitance0 * (voltage**2)
             
             if has_dielectric:
@@ -236,20 +239,25 @@ class CapacitorCalculator:
 
                 if dielectric_coverage == "Diélectrico a la mitad":
                     capacitance = self.plaques_capacitance_diel(largo, ancho, distancia, half=True)
-                    energy = ((0.5 * capacitance0 * voltage**2) / 2) + ((0.5 * capacitance * (voltage/k)**2) / 2)
-                    libre = (charge/(k+1) * largo * ancho)
-                    libreP = (charge * k/(k+1) * largo * ancho)
-                    ligadaP = libreP * (1 - 1/k)
+                    chargeAPlaca = (charge0/(k+1))
+                    chargeDPlaca = (charge0*k/(k+1))
+                    charge = chargeDPlaca + chargeAPlaca
+                    energy = ((0.25 * capacitance0 * voltage**2)) + ((0.25 * capacitance * (voltage/k)**2))
+                    libre = (2*charge/((k+1) * largo * ancho))
+                    libreP = (2*charge*k/((k+1) * largo * ancho))
+                    ligadaP = libreP * (1 - (1/k))
                     self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre: {libre:.4e} C\nCarga Libre Plexiglass: {libreP:.4e} C\nCarga Ligada Plexiglass: {ligadaP:.4e}")
 
                 elif dielectric_coverage == "Diélectrico completo":
                     capacitance = self.plaques_capacitance_diel(largo, ancho, distancia, half=False)
-                    libreP = (charge/largo * ancho)
-                    ligadaP = libreP * (1 - 1/k)
-                    self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre: {libreP:.4e} C\nCarga Ligada Plexiglass: {ligadaP:.4e}")
+                    chargeCompletoPlacas = capacitance0 * voltage
+                    energy = 0.5 * capacitance * (voltage/k)**2
+                    libreP = (chargeCompletoPlacas/(largo * ancho))
+                    ligadaP = libreP * (1 - (1/k))
+                    self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {chargeCompletoPlacas:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre: {libreP:.4e} C\nCarga Ligada Plexiglass: {ligadaP:.4e}")
 
             else:
-                self.result_label.config(text=f"Capacitancia: {capacitance0:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J")
+                self.result_label.config(text=f"Capacitancia: {capacitance0:.4e} F\nCarga: {charge0:.4e} C\nEnergía: {energy:.4e} J")
         
 
         #SI EL CAPACITOR ES DE PLACAS PARALELAS
@@ -259,8 +267,8 @@ class CapacitorCalculator:
             longitud = long
             capacitance0 = self.cylinder_capacitance(ra, rb, longitud)
             
-            charge = capacitance * voltage
-            energy = 0.5 * capacitance * (voltage**2)
+            charge0 = capacitance0 * voltage
+            energy = 0.5 * capacitance0 * (voltage**2)
             
             if has_dielectric:
                 k = 3.40
@@ -270,28 +278,33 @@ class CapacitorCalculator:
                 
                 if dielectric_coverage == "Diélectrico a la mitad":
                     capacitance = self.cylinder_capacitance_diel(ra, rb, longitud, half=True)
-                    charge = capacitance * voltage
+                    chargeACil = (charge0/(k+1))
+                    chargeDCil = (charge0*k/(k+1))
+                    charge = chargeDCil + chargeACil
 
-                    energy = ((0.5 * capacitance0 * voltage**2) / 2) + ((0.5 * capacitance * (voltage/k)**2) / 2)
+                    energy = ((0.25 * capacitance0 * voltage**2)) + ((0.25 * capacitance * (voltage/k)**2))
 
-                    libreRa = (1/ long * math.pi * rb)*(charge/k+1)
-                    libreRb = (1/long * math.pi * rb)*(charge/k+1)
-                    libreDRa = (k/long * math.pi * ra)*(charge/k+1)
-                    libreDRb = (k/long * math.pi * rb)*(charge/k+1)
-                    ligadaRa = libreDRa * (1 - 1/k)
-                    ligadaRb = libreDRb * (1 - 1/k)
+                    libreRa = (1/ (long * math.pi * ra))*(charge0/(k+1))
+                    libreRb = (1/ (long * math.pi * rb))*(charge0/(k+1))
+                    libreDRa = (k/ (long * math.pi * ra))*(charge0/(k+1))
+                    libreDRb = (k/ (long * math.pi * rb))*(charge0/(k+1))
+                    ligadaRa = libreDRa * (1 - (1/k))
+                    ligadaRb = libreDRb * (1 - (1/k))
                     self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre Interna: {libreRa:.4e} C\nCarga Libre Externa: {libreRb:.4e} C\nCarga Libre Interna Dielectrico: {libreDRa:.4e} C\nCarga Libre Externa Dielectrico: {libreDRb:.4e} C\nCarga Ligada Interna: {ligadaRa:.4e} C\nCarga Ligada Externa: {ligadaRb:.4e} C")
 
                 elif dielectric_coverage == "Diélectrico completo":
                     capacitance = self.cylinder_capacitance_diel(ra, rb, longitud, half=False)
-                    libreDRa = (charge/2 * math.pi * ra * long)
-                    libreDRb = (charge/2 * math.pi * rb * long)
-                    ligadaRa = libreDRa * (1 - 1/k)
-                    ligadaRb = libreDRb * (1 - 1/k)
+                    charge = capacitance0 * voltage
+                    energy = 0.5 * capacitance * (voltage/k)**2
+
+                    libreDRa = (charge/(2 * math.pi * ra * long))
+                    libreDRb = (charge/(2 * math.pi * rb * long))
+                    ligadaRa = libreDRa * (1 - (1/k))
+                    ligadaRb = libreDRb * (1 - (1/k))
                     self.result_label.config(text=f"Capacitancia: {capacitance:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J\nCarga Libre Interna Dielectrico: {libreDRa:.4e} C\nCarga Libre Externa Dielectrico: {libreDRb:.4e} C\nCarga Ligada Interna: {ligadaRa:.4e} C\nCarga Ligada Externa: {ligadaRb:.4e} C")
 
             else:
-                self.result_label.config(text=f"Capacitancia: {capacitance0:.4e} F\nCarga: {charge:.4e} C\nEnergía: {energy:.4e} J")
+                self.result_label.config(text=f"Capacitancia: {capacitance0:.4e} F\nCarga: {charge0:.4e} C\nEnergía: {energy:.4e} J")
 
 
     def draw_placas_paralelas(self):
